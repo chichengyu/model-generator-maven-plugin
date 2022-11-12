@@ -52,6 +52,11 @@ public class ModelGeneratorMojo extends AbstractMojo {
     private String packageName;
 
     /**
+     * class file suffix
+     */
+    private String suffix = "";
+
+    /**
      * url of the database.
      * @parameter expression="${url}"
      * @required
@@ -84,21 +89,15 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
     /**
      * model generator java file.
-//     * @parameter expression="${model}"
+     * @parameter expression="${modelFolderName}"
      */
-//    private Boolean model;
+    private String modelFolderName = "";
 
     /**
      * service generator java file.
-//     * @parameter expression="${service}"
+     * @parameter expression="${serviceFolderName}"
      */
-//    private Boolean service;
-
-    /**
-     * serviceImpl generator java file.
-//     * @parameter expression="${serviceImpl}"
-     */
-//    private Boolean serviceImpl;
+    private String serviceFolderName = "";
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -139,14 +138,30 @@ public class ModelGeneratorMojo extends AbstractMojo {
             throw e;
         }
         String folderPathStr = path + packageName.replace(".", "/");
+        String modelPathStr = folderPathStr + "/" + modelFolderName;
+        String servicePathStr = folderPathStr + "/" + serviceFolderName;
+        String serviceImplPathStr = servicePathStr + "/Impl";
         Path folderPath = Paths.get(folderPathStr);
-        if (!Files.exists(folderPath)) {
-            try {
+        try {
+            if (!Files.exists(folderPath)) {
                 Files.createDirectories(folderPath);
-            } catch (final IOException ioe) {
-                //getLog().error(ioe);
-                throw ioe;
             }
+            // model service serviceImpl
+            Path modelPath = Paths.get(modelPathStr);
+            if (!Files.exists(modelPath)) {
+                Files.createDirectories(modelPath);
+            }
+            Path servicePath = Paths.get(servicePathStr);
+            if (!Files.exists(servicePath)) {
+                Files.createDirectories(servicePath);
+            }
+            Path serviceImplPath = Paths.get(serviceImplPathStr);
+            if (!Files.exists(serviceImplPath)) {
+                Files.createDirectories(serviceImplPath);
+            }
+        } catch (final IOException ioe) {
+            //getLog().error(ioe);
+            throw ioe;
         }
         // 使用并行流
         tables.stream().forEach(table -> {
@@ -157,6 +172,29 @@ public class ModelGeneratorMojo extends AbstractMojo {
                     Files.createFile(filePath);
                 }
                 Files.write(filePath, fileInfo.getText().getBytes());
+                // model service serviceImpl
+                if (!"".equals(modelFolderName)){
+                    JavaFileInfo modelFileInfo = createModelFileInfo(table);
+                    Path modelFilePath = Paths.get(modelPathStr, modelFileInfo.getFileName() + ".java");
+                    if (!Files.exists(modelFilePath)){
+                        Files.createFile(modelFilePath);
+                    }
+                    Files.write(modelFilePath, modelFileInfo.getText().getBytes());
+                }
+                if (!"".equals(serviceFolderName)){
+                    JavaFileInfo serviceFileInfo = createServiceFileInfo(table);
+                    Path serviceFilePath = Paths.get(servicePathStr, serviceFileInfo.getFileName() + ".java");
+                    if (!Files.exists(serviceFilePath)){
+                        Files.createFile(serviceFilePath);
+                    }
+                    Files.write(serviceFilePath, serviceFileInfo.getText().getBytes());
+                    JavaFileInfo serviceImplFileInfo = createServiceImplFileInfo(table);
+                    Path serviceImplFilePath = Paths.get(serviceImplPathStr, serviceImplFileInfo.getFileName() + ".java");
+                    if (!Files.exists(serviceImplFilePath)){
+                        Files.createFile(serviceImplFilePath);
+                    }
+                    Files.write(serviceImplFilePath, serviceImplFileInfo.getText().getBytes());
+                }
             } catch (final IOException ioe) {
                 getLog().error(ioe);
             }
@@ -229,13 +267,61 @@ public class ModelGeneratorMojo extends AbstractMojo {
     }
 
     /**
+     * 生成Model对象
+     */
+    private JavaFileInfo createModelFileInfo(Table table) {
+        String tableName = table.getTableName(),
+                className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + modelFolderName;
+        getLog().info("正在生成Model类" + className + "...");
+
+        // 替换类名、包名、表名
+        String classText = classModelTemplateText.replace("${packageName}", packageName+"."+modelFolderName)
+                .replace("${className}", className).replace("${tableName}", tableName);
+
+        return JavaFileInfo.create().setFileName(className).setText(classText.toString());
+    }
+
+    /**
+     * 生成Service对象
+     */
+    private JavaFileInfo createServiceFileInfo(Table table) {
+        String tableName = table.getTableName(),
+                className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + serviceFolderName;
+        getLog().info("正在生成Service类" + className + "...");
+
+        // 替换类名、包名、表名
+        String classText = classServiceTemplateText.replace("${packageName}", packageName+"."+serviceFolderName)
+                .replace("${className}", className).replace("${tableName}", tableName);
+
+        return JavaFileInfo.create().setFileName(className).setText(classText.toString());
+    }
+
+    /**
+     * 生成ServiceImpl对象实现类
+     */
+    private JavaFileInfo createServiceImplFileInfo(Table table) {
+        String tableName = table.getTableName(),
+                className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) ;
+        getLog().info("正在生成ServiceImpl实现类" + className + "...");
+        String serviceClassName = className + serviceFolderName;
+        className += serviceFolderName + "Impl";
+        // 替换类名、包名、表名
+        String classText = classServiceImplTemplateText.replace("${packageName}", packageName+"."+ serviceFolderName + ".Impl")
+                .replace("${servicePackageName}", packageName+"."+serviceFolderName)
+                .replace("${className}", className)
+                .replace("${serviceName}", serviceClassName)
+                .replace("${tableName}", tableName);
+
+        return JavaFileInfo.create().setFileName(className).setText(classText.toString());
+    }
+
+    /**
      * 生成DO对象文本
      */
     private JavaFileInfo createDoJavaFileInfo(Table table) {
         String tableName = table.getTableName(),
-                className = tableName.substring(0, 1).toUpperCase()
-                        + lineToHump(tableName).substring(1);
-        getLog().info("正在生成类" + className + "...");
+                className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + suffix;
+        getLog().info("正在生成实体类" + className + "...");
 
         // 替换类名、包名、表名
         String classText = classTemplateText.replace("${packageName}", packageName)
@@ -287,6 +373,41 @@ public class ModelGeneratorMojo extends AbstractMojo {
         matcher.appendTail(sb);
         return sb.toString();
     }
+
+    /**
+     * model类文件模板
+     */
+    private static final String classModelTemplateText = "package ${packageName};\n" +
+            "\n" +
+            "/**\n" +
+            " * 工具自动生成...\n" +
+            " * tableName = \"${tableName}\"\n" +
+            " */\n" +
+            "public interface ${className}{\n}";
+
+    /**
+     * service类文件模板
+     */
+    private static final String classServiceTemplateText = "package ${packageName};\n" +
+            "\n" +
+            "/**\n" +
+            " * 工具自动生成...\n" +
+            " * tableName = \"${tableName}\"\n" +
+            " */\n" +
+            "public interface ${className}{\n}";
+
+    /**
+     * serviceImpl实现类文件模板
+     */
+    private static final String classServiceImplTemplateText = "package ${packageName};\n" +
+            "\n" +
+            "import ${servicePackageName};\n" +
+            "\n" +
+            "/**\n" +
+            " * 工具自动生成...\n" +
+            " * tableName = \"${tableName}\"\n" +
+            " */\n" +
+            "public class ${className} implements ${serviceName}{\n}";
 
     /**
      * 类文件模板
