@@ -140,24 +140,28 @@ public class ModelGeneratorMojo extends AbstractMojo {
         String folderPathStr = path + packageName.replace(".", "/");
         String modelPathStr = folderPathStr + "/" + modelFolderName;
         String servicePathStr = folderPathStr + "/" + serviceFolderName;
-        String serviceImplPathStr = servicePathStr + "/Impl";
+        String serviceImplPathStr = servicePathStr + "/impl";
         Path folderPath = Paths.get(folderPathStr);
         try {
             if (!Files.exists(folderPath)) {
                 Files.createDirectories(folderPath);
             }
             // model service serviceImpl
-            Path modelPath = Paths.get(modelPathStr);
-            if (!Files.exists(modelPath)) {
-                Files.createDirectories(modelPath);
+            if (!"".equals(modelFolderName)){
+                Path modelPath = Paths.get(modelPathStr);
+                if (!Files.exists(modelPath)) {
+                    Files.createDirectories(modelPath);
+                }
             }
-            Path servicePath = Paths.get(servicePathStr);
-            if (!Files.exists(servicePath)) {
-                Files.createDirectories(servicePath);
-            }
-            Path serviceImplPath = Paths.get(serviceImplPathStr);
-            if (!Files.exists(serviceImplPath)) {
-                Files.createDirectories(serviceImplPath);
+            if (!"".equals(serviceFolderName)){
+                Path servicePath = Paths.get(servicePathStr);
+                if (!Files.exists(servicePath)) {
+                    Files.createDirectories(servicePath);
+                }
+                Path serviceImplPath = Paths.get(serviceImplPathStr);
+                if (!Files.exists(serviceImplPath)) {
+                    Files.createDirectories(serviceImplPath);
+                }
             }
         } catch (final IOException ioe) {
             //getLog().error(ioe);
@@ -302,12 +306,12 @@ public class ModelGeneratorMojo extends AbstractMojo {
     private JavaFileInfo createServiceImplFileInfo(Table table) {
         String tableName = table.getTableName(),
                 className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) ;
-        getLog().info("正在生成ServiceImpl实现类" + className + "...");
         String serviceClassName = className + serviceFolderName;
         className += serviceFolderName + "Impl";
+        getLog().info("正在生成ServiceImpl实现类" + className + "...");
         // 替换类名、包名、表名
-        String classText = classServiceImplTemplateText.replace("${packageName}", packageName+"."+ serviceFolderName + ".Impl")
-                .replace("${servicePackageName}", packageName+"."+serviceFolderName)
+        String classText = classServiceImplTemplateText.replace("${packageName}", packageName+"."+ serviceFolderName + ".impl")
+                .replace("${servicePackageName}", packageName+"."+serviceFolderName+"."+serviceClassName)
                 .replace("${className}", className)
                 .replace("${serviceName}", serviceClassName)
                 .replace("${tableName}", tableName);

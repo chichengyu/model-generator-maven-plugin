@@ -19,6 +19,8 @@ public class HelpMojo extends AbstractMojo {
         sb.append("参数配置：").append("\n");
         sb.append("    path：${basedir}/src/main/java/ 输出文件目录(不用修改) 必须").append("\n");
         sb.append("    packageName：com.xxx.xxx 包名(自定义) 必须").append("\n");
+        sb.append("    modelFolderName：如 TbUserDao、TbUserEntity Model名称(自定义) 可选").append("\n");
+        sb.append("    serviceFolderName：如 TbUserService Service名称(自定义) 可选").append("\n");
         sb.append("    url：jdbc:mysql://xxx.cn/test?useSSL=false&amp;characterEncoding=utf8 数据库url(自定义) 必须").append("\n");
         sb.append("    username：xxxxxx 数据库username(自定义) 必须").append("\n");
         sb.append("    password：xxxxxx 数据库password(自定义) 必须").append("\n");

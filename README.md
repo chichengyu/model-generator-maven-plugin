@@ -16,6 +16,10 @@
         <path>${basedir}/src/main/java/</path>
         <!-- 包名 -->
         <packageName>com.demo.pojo</packageName>
+        <!-- model名称,可选,如 TbUserDao、TbUserEntity(最好首字母大写,然后改包名称首字母小写) -->
+        <modelFolderName>Dao</modelFolderName>
+        <!-- service名称,可选,如 TbUserService(最好首字母大写,然后改包名称首字母小写) -->
+        <serviceFolderName>Service</serviceFolderName>
         <!-- 数据库链接 -->
         <url>jdbc:mysql://127.0.0.1/test?useSSL=false&amp;characterEncoding=utf8</url>
         <!-- 数据库账号 -->
