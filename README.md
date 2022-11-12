@@ -10,7 +10,7 @@
 <plugin>
     <groupId>io.github.chichengyu</groupId>
     <artifactId>model-generator-maven-plugin</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <configuration>
         <!-- 输出文件目录,不用改 -->
         <path>${basedir}/src/main/java/</path>
