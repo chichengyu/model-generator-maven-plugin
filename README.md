@@ -41,6 +41,7 @@
 
 下载完成,放到一个你知道的位置，比如我放在D:/,执行安装命令
 ```
+# 注意：只需要修改 -Dfile=/D:/ojdbc6.jar ,后面的不需要修改
 mvn install:install-file -Dfile=/D:/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.1.0 -Dpackaging=jar -DgeneratePom=true
 ```
 然后一切就绪后，就直接在idea右边侧边栏，选中 `maven -> Plugins -> model-generator -> model-generator:model`(执行`model-generator:help`，可看到所有配置参数),执行完成后，可以到包下已经生成对应的java文件了。
