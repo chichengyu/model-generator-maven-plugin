@@ -23,7 +23,7 @@
         <!-- 数据库密码 -->
         <password>123456</password>
         <tableNames>
-            <!-- 每一个 include -->
+            <!-- 每一个 include代表一张表,可以多个 -->
             <include>tb_user</include>
         </tableNames>
     </configuration>
