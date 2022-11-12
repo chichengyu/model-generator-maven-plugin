@@ -1,1 +1,1 @@
-# model-maven-plugin
+# model-generator-maven-plugin
