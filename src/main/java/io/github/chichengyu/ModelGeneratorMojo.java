@@ -291,7 +291,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
      */
     private JavaFileInfo createServiceFileInfo(Table table) {
         String tableName = table.getTableName(),
-                className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + serviceFolderName;
+                className = "I" + tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + serviceFolderName;
         getLog().info("正在生成Service类" + className + "...");
 
         // 替换类名、包名、表名
@@ -307,7 +307,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
     private JavaFileInfo createServiceImplFileInfo(Table table) {
         String tableName = table.getTableName(),
                 className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) ;
-        String serviceClassName = className + serviceFolderName;
+        String serviceClassName = "I" + className + serviceFolderName;
         className += serviceFolderName + "Impl";
         getLog().info("正在生成ServiceImpl实现类" + className + "...");
         // 替换类名、包名、表名

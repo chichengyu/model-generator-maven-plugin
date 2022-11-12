@@ -5,13 +5,13 @@
         <img src="https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E5%B0%8F%E6%B1%A0-%23129e50" alt="MIT License" />
     </a>
     <a href="https://github.com/chichengyu/model-generator-maven-plugin">
-        <img src="https://img.shields.io/badge/last version-1.2.3-green" alt="version-1.2.3" />
+        <img src="https://img.shields.io/badge/last version-1.2.6-green" alt="version-1.2.6" />
     </a>
 </p>
 
 ## 介绍
 
-为了方便从数据库自动生成java实体、model层、service层与servicel实现类的代码自动生成工具，没有MyBatis生成的那些多余的
+为了方便从数据库自动生成java实体、model层、service层与servicelImpl实现类的代码自动生成工具，没有MyBatis生成的那些多余的
 
 ##### 使用说明
 导包
@@ -19,13 +19,13 @@
 <plugin>
     <groupId>io.github.chichengyu</groupId>
     <artifactId>model-generator-maven-plugin</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.6</version>
     <configuration>
         <!-- 输出文件目录,不用改 -->
         <path>${basedir}/src/main/java/</path>
         <!-- 包名 -->
         <packageName>com.demo.pojo</packageName>
-        <!-- 实体后缀,如：TbUserPojo、TbUserEntity -->
+        <!-- 实体后缀,可选,如：TbUserPojo、TbUserEntity -->
         <suffix>Entity</suffix>
         <!-- model名称,可选,如 TbUserDao、TbUserMapper(最好首字母大写,然后改包名称首字母小写) -->
         <modelFolderName>Dao</modelFolderName>
@@ -52,7 +52,7 @@
 
  - 链接：https://share.weiyun.com/4V67i2fT 密码：66dg96
 
-下载完成,放到一个你知道的位置，比如我放在D:/,执行安装命令
+下载完成,放到一个你知道的位置，比如我放在D:/盘,执行安装命令
 ```
 # 注意：只需要修改路径 -Dfile=/D:/ojdbc6.jar ,后面的不需要修改
 mvn install:install-file -Dfile=/D:/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.1.0 -Dpackaging=jar -DgeneratePom=true
