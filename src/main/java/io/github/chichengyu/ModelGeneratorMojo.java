@@ -53,6 +53,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
     /**
      * class file suffix
+     * @parameter expression="${suffix}"
      */
     private String suffix = "";
 

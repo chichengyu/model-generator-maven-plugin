@@ -16,6 +16,8 @@
         <path>${basedir}/src/main/java/</path>
         <!-- 包名 -->
         <packageName>com.demo.pojo</packageName>
+        <!-- 实体后缀,如：TbUserPojo、TbUserEntity -->
+        <suffix>Entity</suffix>
         <!-- model名称,可选,如 TbUserDao、TbUserEntity(最好首字母大写,然后改包名称首字母小写) -->
         <modelFolderName>Dao</modelFolderName>
         <!-- service名称,可选,如 TbUserService(最好首字母大写,然后改包名称首字母小写) -->

@@ -44,12 +44,16 @@ public class DbUtil {
     public static String getTypeToField(String type) {
         if (type.contains("BIGINT")){
             return "Long";
-        }else if (type.contains("NUMBER")||type.contains("INT")||type.contains("BIT")){
+        }else if (type.contains("NUMBER")||type.contains("INT")||type.contains("BIT")||type.contains("TINYINT")){
             return "Integer";
-        }else if (type.contains("VARCHAR2")||type.contains("VARCHAR")||type.contains("CHAR")){
+        }else if (type.contains("VARCHAR2")||type.contains("VARCHAR")||type.contains("CHAR")||type.contains("TEXT")||type.contains("LONGTEXT")){
             return "String";
         }else if (type.contains("DATETIME")||type.contains("DATE")){
             return "Date";
+        }else if (type.contains("DOUBLE")){
+            return "Double";
+        }else if (type.contains("FLOAT")){
+            return "Float";
         }else {
             return "null";
         }
