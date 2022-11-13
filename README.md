@@ -44,6 +44,14 @@
     </configuration>
 </plugin>
 ```
+导包之后，会报错
+```
+Could not find artifact com.oracle:ojdbc6:pom:11.2.0.1.0 in alimaven (http://maven.aliyun.com/nexus/content/groups/public/)
+```
+因为` oracle `是收费的，所以中央仓库没有这个包，需要手动去[下载安装](#可能问题(如果本地安装了oracle,直接找到包ojdbc6.jar进行安装))  
+
+如果数据库是` mysql `，这个错误直接忽略，刷新一下maven就没问题了  
+
 然后一切就绪后，就直接在idea右边侧边栏，选中 `maven -> Plugins -> model-generator -> model-generator:model`(执行`model-generator:help`，可看到所有配置参数),执行完成后，可以到包下已经生成对应的java文件了。
 
 #### 可能问题(如果本地安装了oracle,直接找到包ojdbc6.jar进行安装)
