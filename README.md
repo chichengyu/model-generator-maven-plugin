@@ -14,7 +14,9 @@
 
 ## 介绍
 
-为了方便从数据库自动生成java实体、model层、service层与servicelImpl实现类的代码自动生成工具，没有MyBatis生成的那些多余的
+为了方便从数据库自动生成java实体、model层、service层与servicelImpl实现类的代码自动生成工具，没有MyBatis生成的那些多余的。
+
+设置的时候包名首字母最好大写，因为会拼接在类的名称中，生成后在改包的文件夹名称首字母小写就ok了。
 
 ### 使用说明
 分2个版本：` 1.2.8 `只支持 ` MySql `，` 1.2.6 `支持 ` MySql `与 ` Oracle `
@@ -50,6 +52,7 @@
     </configuration>
 </plugin>
 ```
+然后一切就绪后，就直接在idea右边侧边栏，选中 `maven -> Plugins -> model-generator -> model-generator:model`(执行`model-generator:help`，可看到所有配置参数),执行完成后，可以到包下已经生成对应的java文件了。
 
 #### 1.2.6版本
 ` 1.2.6 `支持 ` MySql `与 ` Oracle `，导包
