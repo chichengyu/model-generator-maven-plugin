@@ -7,14 +7,52 @@
     <a href="https://github.com/chichengyu/model-generator-maven-plugin">
         <img src="https://img.shields.io/badge/last version-1.2.6-green" alt="version-1.2.6" />
     </a>
+    <a href="https://github.com/chichengyu/model-generator-maven-plugin">
+        <img src="https://img.shields.io/badge/last version-1.2.8-blue" alt="version-1.2.8" />
+    </a>
 </p>
 
 ## 介绍
 
 为了方便从数据库自动生成java实体、model层、service层与servicelImpl实现类的代码自动生成工具，没有MyBatis生成的那些多余的
 
-##### 使用说明
-导包
+### 使用说明
+分2个版本：` 1.2.8 `只支持 ` MySql `，` 1.2.6 `支持 ` MySql `与 ` Oracle `
+
+#### 1.2.8版本
+` 1.2.8 `只支持 ` MySql `，导包
+```
+<plugin>
+    <groupId>io.github.chichengyu</groupId>
+    <artifactId>model-generator-maven-plugin</artifactId>
+    <version>1.2.8</version>
+    <configuration>
+        <!-- 输出文件目录,不用改 -->
+        <path>${basedir}/src/main/java/</path>
+        <!-- 包名 -->
+        <packageName>com.demo.pojo</packageName>
+        <!-- 实体后缀,可选,如：TbUserPojo、TbUserEntity -->
+        <suffix>Entity</suffix>
+        <!-- model名称,可选,如 TbUserDao、TbUserMapper(最好首字母大写,然后改包名称首字母小写) -->
+        <modelFolderName>Dao</modelFolderName>
+        <!-- service名称,可选,如 TbUserService(最好首字母大写,然后改包名称首字母小写) -->
+        <serviceFolderName>Service</serviceFolderName>
+        <!-- 数据库链接 -->
+        <url>jdbc:mysql://127.0.0.1/test?useSSL=false&amp;characterEncoding=utf8</url>
+        <!-- 数据库账号 -->
+        <username>root</username>
+        <!-- 数据库密码 -->
+        <password>123456</password>
+        <tableNames>
+            <!-- 每一个 include代表一张表,可以多个 -->
+            <include>tb_user</include>
+        </tableNames>
+    </configuration>
+</plugin>
+```
+
+#### 1.2.6版本
+` 1.2.6 `支持 ` MySql `与 ` Oracle `，导包
 ```
 <plugin>
     <groupId>io.github.chichengyu</groupId>
