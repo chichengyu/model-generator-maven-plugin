@@ -36,9 +36,9 @@
         <!-- 实体后缀,可选,如：TbUserPojo、TbUserEntity -->
         <suffix>Entity</suffix>
         <!-- model名称,可选,如 TbUserDao、TbUserMapper -->
-        <modelFolderName>Dao</modelFolderName>
+        <modelFolderName>dao</modelFolderName>
         <!-- service名称,可选,如 TbUserService 与 TbUserServiceImpl(自动生成) -->
-        <serviceFolderName>Service</serviceFolderName>
+        <serviceFolderName>service</serviceFolderName>
         <!-- 数据库链接 -->
         <url>jdbc:mysql://127.0.0.1/test?useSSL=false&amp;characterEncoding=utf8</url>
         <!-- 数据库账号 -->
