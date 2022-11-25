@@ -149,17 +149,17 @@ public class ModelGeneratorMojo extends AbstractMojo {
             }
             // model service serviceImpl
             if (!"".equals(modelFolderName)){
-                Path modelPath = Paths.get(modelPathStr);
+                Path modelPath = Paths.get(modelPathStr.toLowerCase());
                 if (!Files.exists(modelPath)) {
                     Files.createDirectories(modelPath);
                 }
             }
             if (!"".equals(serviceFolderName)){
-                Path servicePath = Paths.get(servicePathStr);
+                Path servicePath = Paths.get(servicePathStr.toLowerCase());
                 if (!Files.exists(servicePath)) {
                     Files.createDirectories(servicePath);
                 }
-                Path serviceImplPath = Paths.get(serviceImplPathStr);
+                Path serviceImplPath = Paths.get(serviceImplPathStr.toLowerCase());
                 if (!Files.exists(serviceImplPath)) {
                     Files.createDirectories(serviceImplPath);
                 }
@@ -276,11 +276,11 @@ public class ModelGeneratorMojo extends AbstractMojo {
      */
     private JavaFileInfo createModelFileInfo(Table table) {
         String tableName = table.getTableName(),
-                className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + modelFolderName;
+                className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + firstUpperCaseOrLowerCase(modelFolderName,true);
         getLog().info("正在生成Model类" + className + "...");
 
         // 替换类名、包名、表名
-        String classText = classModelTemplateText.replace("${packageName}", packageName+"."+modelFolderName)
+        String classText = classModelTemplateText.replace("${packageName}", packageName+"."+ modelFolderName.toLowerCase())
                 .replace("${className}", className).replace("${tableName}", tableName);
 
         return JavaFileInfo.create().setFileName(className).setText(classText.toString());
@@ -291,11 +291,11 @@ public class ModelGeneratorMojo extends AbstractMojo {
      */
     private JavaFileInfo createServiceFileInfo(Table table) {
         String tableName = table.getTableName(),
-                className = "I" + tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + serviceFolderName;
+                className = "I" + tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) + firstUpperCaseOrLowerCase(serviceFolderName,true);
         getLog().info("正在生成Service类" + className + "...");
 
         // 替换类名、包名、表名
-        String classText = classServiceTemplateText.replace("${packageName}", packageName+"."+serviceFolderName)
+        String classText = classServiceTemplateText.replace("${packageName}", packageName+"."+serviceFolderName.toLowerCase())
                 .replace("${className}", className).replace("${tableName}", tableName);
 
         return JavaFileInfo.create().setFileName(className).setText(classText.toString());
@@ -307,12 +307,12 @@ public class ModelGeneratorMojo extends AbstractMojo {
     private JavaFileInfo createServiceImplFileInfo(Table table) {
         String tableName = table.getTableName(),
                 className = tableName.substring(0, 1).toUpperCase() + lineToHump(tableName).substring(1) ;
-        String serviceClassName = "I" + className + serviceFolderName;
-        className += serviceFolderName + "Impl";
+        String serviceClassName = "I" + className + firstUpperCaseOrLowerCase(serviceFolderName,true);
+        className += firstUpperCaseOrLowerCase(serviceFolderName,true) + "Impl";
         getLog().info("正在生成ServiceImpl实现类" + className + "...");
         // 替换类名、包名、表名
-        String classText = classServiceImplTemplateText.replace("${packageName}", packageName+"."+ serviceFolderName + ".impl")
-                .replace("${servicePackageName}", packageName+"."+serviceFolderName+"."+serviceClassName)
+        String classText = classServiceImplTemplateText.replace("${packageName}", packageName+"."+ serviceFolderName.toLowerCase() + ".impl")
+                .replace("${servicePackageName}", packageName+"."+serviceFolderName.toLowerCase()+"."+serviceClassName)
                 .replace("${className}", className)
                 .replace("${serviceName}", serviceClassName)
                 .replace("${tableName}", tableName);
@@ -362,6 +362,17 @@ public class ModelGeneratorMojo extends AbstractMojo {
                 .replace("${getSetMethodPart}", getSetMethodPart);
 
         return JavaFileInfo.create().setFileName(className).setText(classFinalText.toString());
+    }
+
+    /**
+     * 首字母大小写转换(默认小写)
+     */
+    private String firstUpperCaseOrLowerCase(String name,boolean isUpperCase){
+        String n = "";
+        if (name == null || n.equals(name)){
+            return n;
+        }
+        return isUpperCase ? (name.substring(0,1).toUpperCase() + name.substring(1)) : name.toLowerCase();
     }
 
     /**

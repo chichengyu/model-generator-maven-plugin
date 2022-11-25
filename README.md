@@ -8,7 +8,7 @@
         <img src="https://img.shields.io/badge/last version-1.2.6-green" alt="version-1.2.6" />
     </a>
     <a href="https://github.com/chichengyu/model-generator-maven-plugin">
-        <img src="https://img.shields.io/badge/last version-1.2.8-blue" alt="version-1.2.8" />
+        <img src="https://img.shields.io/badge/last version-1.3.0-blue" alt="version-1.3.0" />
     </a>
 </p>
 
@@ -19,15 +19,15 @@
 设置的时候包名首字母最好大写，因为会拼接在类的名称中，生成后在改包的文件夹名称首字母小写就ok了。
 
 ### 使用说明
-分2个版本：` 1.2.8 `只支持 ` MySql `，` 1.2.6 `支持 ` MySql `与 ` Oracle `
+分2个版本：` 1.3.0 `只支持 ` MySql `，` 1.2.6 `支持 ` MySql `与 ` Oracle `
 
-#### 1.2.8版本
-` 1.2.8 `只支持 ` MySql `，导包
+#### 1.3.0版本
+` 1.3.0 `只支持 ` MySql `，导包
 ```
 <plugin>
     <groupId>io.github.chichengyu</groupId>
     <artifactId>model-generator-maven-plugin</artifactId>
-    <version>1.2.8</version>
+    <version>1.3.0</version>
     <configuration>
         <!-- 输出文件目录,不用改 -->
         <path>${basedir}/src/main/java/</path>
@@ -35,9 +35,9 @@
         <packageName>com.demo.pojo</packageName>
         <!-- 实体后缀,可选,如：TbUserPojo、TbUserEntity -->
         <suffix>Entity</suffix>
-        <!-- model名称,可选,如 TbUserDao、TbUserMapper(最好首字母大写,然后改包名称首字母小写) -->
+        <!-- model名称,可选,如 TbUserDao、TbUserMapper -->
         <modelFolderName>Dao</modelFolderName>
-        <!-- service名称,可选,如 TbUserService(最好首字母大写,然后改包名称首字母小写) -->
+        <!-- service名称,可选,如 TbUserService 与 TbUserServiceImpl(自动生成) -->
         <serviceFolderName>Service</serviceFolderName>
         <!-- 数据库链接 -->
         <url>jdbc:mysql://127.0.0.1/test?useSSL=false&amp;characterEncoding=utf8</url>
