@@ -29,7 +29,7 @@
     <configuration>
         <!-- 输出文件目录,不用改 -->
         <path>${basedir}/src/main/java/</path>
-        <!-- 包名 -->
+        <!-- 包名(实体生成后所在的目录) -->
         <packageName>com.demo.pojo</packageName>
         <!-- 实体后缀(首字母大写),可选,如：TbUserPojo、TbUserEntity -->
         <suffix>Entity</suffix>
@@ -62,7 +62,7 @@
     <configuration>
         <!-- 输出文件目录,不用改 -->
         <path>${basedir}/src/main/java/</path>
-        <!-- 包名 -->
+        <!-- 包名(实体生成后所在的目录) -->
         <packageName>com.demo.pojo</packageName>
         <!-- 实体后缀,可选,如：TbUserPojo、TbUserEntity -->
         <suffix>Entity</suffix>
