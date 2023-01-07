@@ -16,8 +16,6 @@
 
 为了方便从数据库自动生成java实体、model层、service层与servicelImpl实现类的代码自动生成工具，没有MyBatis生成的那些多余的。
 
-设置的时候包名首字母最好大写，因为会拼接在类的名称中，生成后在改包的文件夹名称首字母小写就ok了。
-
 ### 使用说明
 分2个版本：` 1.3.0 `只支持 ` MySql `，` 1.2.6 `支持 ` MySql `与 ` Oracle `
 
@@ -33,7 +31,7 @@
         <path>${basedir}/src/main/java/</path>
         <!-- 包名 -->
         <packageName>com.demo.pojo</packageName>
-        <!-- 实体后缀,可选,如：TbUserPojo、TbUserEntity -->
+        <!-- 实体后缀(首字母大写),可选,如：TbUserPojo、TbUserEntity -->
         <suffix>Entity</suffix>
         <!-- model名称,可选,如 TbUserDao、TbUserMapper -->
         <modelFolderName>dao</modelFolderName>
