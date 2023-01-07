@@ -38,7 +38,7 @@
         <!-- service名称,可选,如 TbUserService 与 TbUserServiceImpl(自动生成) -->
         <serviceFolderName>service</serviceFolderName>
         <!-- 数据库链接 -->
-        <url>jdbc:mysql://127.0.0.1/test?useSSL=false&amp;characterEncoding=utf8</url>
+        <url>jdbc:mysql://127.0.0.1:3306/test?useSSL=false&amp;characterEncoding=utf8</url>
         <!-- 数据库账号 -->
         <username>root</username>
         <!-- 数据库密码 -->
@@ -71,7 +71,7 @@
         <!-- service名称,可选,如 TbUserService(最好首字母大写,然后改包名称首字母小写) -->
         <serviceFolderName>Service</serviceFolderName>
         <!-- 数据库链接 -->
-        <url>jdbc:mysql://127.0.0.1/test?useSSL=false&amp;characterEncoding=utf8</url>
+        <url>jdbc:mysql://127.0.0.1:3306/test?useSSL=false&amp;characterEncoding=utf8</url>
         <!-- 数据库账号 -->
         <username>root</username>
         <!-- 数据库密码 -->
