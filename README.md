@@ -5,19 +5,24 @@
         <img src="https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E5%B0%8F%E6%B1%A0-%23129e50" alt="MIT License" />
     </a>
     <a href="https://github.com/chichengyu/model-generator-maven-plugin">
-        <img src="https://img.shields.io/badge/last version-1.2.6-green" alt="version-1.2.6" />
+        <img src="https://img.shields.io/badge/last mysql 5.0 | oracle version-1.2.6-green" alt="version-1.2.6" />
     </a>
     <a href="https://github.com/chichengyu/model-generator-maven-plugin">
-        <img src="https://img.shields.io/badge/last version-1.3.0-blue" alt="version-1.3.0" />
+        <img src="https://img.shields.io/badge/last mysql 5.0 version-1.3.0-blue" alt="version-1.3.0" />
+    </a>
+    <a href="https://github.com/chichengyu/model-generator-maven-plugin">
+        <img src="https://img.shields.io/badge/last mysql 8.0 version-1.4.2-green" alt="version-1.4.2" />
     </a>
 </p>
 
 ## 介绍
 
-为了方便从数据库自动生成java实体、model层、service层与servicelImpl实现类的代码自动生成工具，没有MyBatis生成的那些多余的。
+最新版本` 1.4.2 `。为了方便从数据库自动生成java实体、model层、service层与servicelImpl实现类的代码自动生成工具，没有MyBatis生成的那些多余的。
 
 ### 使用说明
 分2个版本：` 1.3.0 `只支持 ` MySql `，` 1.2.6 `支持 ` MySql `与 ` Oracle `。
+
+  - 如果mysql是8版本，请使用` 1.4.2 `
 
   *注：所有可选参数都可以不配。
 

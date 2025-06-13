@@ -30,7 +30,7 @@ public class DbUtil {
             Class.forName(driver);
             return DriverManager.getConnection(url, props);
         } else if (MYSQL.equalsIgnoreCase(type)) {
-            String driver = "com.mysql.jdbc.Driver";
+            String driver = "com.mysql.cj.jdbc.Driver";
             Class.forName(driver);
             return DriverManager.getConnection(url, username, password);
         } else {
