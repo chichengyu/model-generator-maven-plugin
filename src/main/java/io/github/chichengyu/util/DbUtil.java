@@ -55,7 +55,7 @@ public class DbUtil {
         }else if (type.contains("FLOAT")){
             return "Float";
         }else {
-            return "null";
+            return "java.math.BigDecimal";
         }
     }
 

@@ -4,7 +4,7 @@
   <groupId>io.github.chichengyu</groupId>
   <artifactId>model-generator-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>1.4.2</version>
+  <version>1.6.0</version>
   <name>model-maven-plugin Maven Mojo</name>
   <url>https://github.com/chichengyu/model-generator-maven-plugin</url>
   <description>一个从数据库自动生成java实体、model层、service层与servicel实现类的代码自动生成工具</description>
