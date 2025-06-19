@@ -14,8 +14,8 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -215,6 +215,48 @@ public class ModelGeneratorMojo extends AbstractMojo {
     private List<Table> geTables(String[] tableNames) throws Exception {
         Connection connection = DbUtil.getConnection(type,url,username,password);
         DatabaseMetaData dbmd = connection.getMetaData();
+        //ResultSet resultSet = dbmd.getTables(null, "%", "%", new String[] { "TABLE" });
+        Statement stmt = connection.createStatement();
+        List<Table> tables = new ArrayList<>();
+        for (String tableName : tableNames) {
+            ResultSet resultSet = dbmd.getTables(null, "%", tableName, new String[] { "TABLE" });
+            String tableComment = "";
+            if (resultSet.next()) {
+                tableComment = resultSet.getString("REMARKS"); // 获取表的备注信息
+            } else {
+                getLog().info("Table ["+ tableName +"] not found.");
+            }
+            getLog().info("正在分析表" + tableName + "["+tableComment+"]" +"...");
+            Table table = new Table();
+            table.setTableName(tableName);
+            table.setTableRemark(tableComment);
+            String sql = createSql(tableName);
+            if (stmt.execute(sql)){
+                List<Table.Column> columns = table.getColumns();
+                ResultSet rs = stmt.getResultSet();
+                while (rs.next()){
+                    String columnName = rs.getString("column_name"); // 字段名
+                    String columnType = rs.getString("column_type"); // 字段类型
+                    String columnLength = rs.getString("column_length"); // 字段长度
+                    String columnIsRequired = rs.getString("is_required"); // 字段是否可为空
+                    String columnDefault = rs.getString("column_default"); // 字段默认值
+                    String columnComment = rs.getString("column_comment"); // 字段备注
+
+                    Table.Column column = new Table.Column();
+                    column.setColumnName(columnName);
+                    column.setColumnType(columnType);
+                    column.setColumnSize(columnLength);
+                    column.setColumnNullable(Integer.valueOf(columnIsRequired));
+                    column.setColumnDefaultValue(("".equals(columnDefault)) ? "空" : columnDefault);
+                    column.setColumnRemark(columnComment);
+                    columns.add(column);
+                }
+                getLog().info("table ["+tableName+tableComment+"]读取到" + columns.size() + "个字段");
+                tables.add(table);
+            }
+        }
+        stmt.close();
+        /*DatabaseMetaData dbmd = connection.getMetaData();
 
         ResultSet resultSet = dbmd.getTables(null, "%", "%", new String[] { "TABLE" });
         List<Table> tables = new ArrayList<>();
@@ -254,9 +296,52 @@ public class ModelGeneratorMojo extends AbstractMojo {
 
             getLog().info("读取到" + columns.size() + "个字段");
             tables.add(table);
-        }
+        }*/
         connection.close();
         return tables;
+    }
+
+    /**
+     * 生成sql语句
+     * @return
+     */
+    private String createSql(String tableName){
+        /*SELECT
+            column_name,
+            (CASE WHEN (is_nullable = 'no' && column_key != 'PRI') THEN '1' ELSE '0' END) AS is_required,
+            (CASE WHEN column_key = 'PRI' THEN '1' ELSE '0' END) AS is_pk,
+            ordinal_position AS sort,
+            column_comment,
+            (CASE WHEN extra = 'auto_increment' THEN '1' ELSE '0' END) AS is_increment,
+            column_type,
+            character_maximum_length AS column_length,
+            column_default
+        FROM
+            information_schema.COLUMNS
+        WHERE
+            table_schema = (SELECT DATABASE())
+            AND table_name = ('member_ship_address')
+        ORDER BY
+            ordinal_position*/
+        StringBuffer sb = new StringBuffer();
+        sb.append("SELECT").append(" ");
+        sb.append("column_name").append(",");
+        sb.append("(CASE WHEN (is_nullable = 'no' && column_key != 'PRI') THEN '1' ELSE '0' END) AS is_required").append(",");
+        sb.append("(CASE WHEN column_key = 'PRI' THEN '1' ELSE '0' END) AS is_pk").append(",");
+        sb.append("ordinal_position AS sort").append(",");
+        sb.append("column_comment").append(",");
+        sb.append("(CASE WHEN extra = 'auto_increment' THEN '1' ELSE '0' END) AS is_increment").append(",");
+        sb.append("column_type").append(",");
+        sb.append("character_maximum_length AS column_length").append(",");
+        sb.append("column_default").append(" ");
+        sb.append("FROM").append(" ");
+        sb.append("information_schema.COLUMNS").append(" ");
+        sb.append("WHERE").append(" ");
+        sb.append("table_schema = (SELECT DATABASE())").append(" ");
+        sb.append("AND table_name = ('"+tableName+"')").append(" ");
+        sb.append("ORDER BY").append(" ");
+        sb.append("ordinal_position").append(";");
+        return sb.toString();
     }
 
     /**
@@ -342,7 +427,7 @@ public class ModelGeneratorMojo extends AbstractMojo {
                     getterSetterName = name.substring(0, 1).toUpperCase() + name.substring(1);
             // 得到一个字段的声明、get方法、set方法
             String fieldText = fieldTemplateText.replace("${fieldRemark}", remark)
-                    .replace("${otherInfo}", "长度：" + column.getColumnSize() + "，" + nullAble + "，默认值：" + column.getColumnDefaultValue())
+                    .replace("${otherInfo}", "类型："+ column.getColumnType() +"，长度：" + column.getColumnSize() + "，" + nullAble + "，默认值：" + column.getColumnDefaultValue())
                     .replace("${fieldType}", type).replace("${fieldName}", name);
             String getSetMethodText = getSetMethodTemplateText.replace("${fieldType}", type)
                     .replace("${fieldName}", name)

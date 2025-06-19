@@ -49,7 +49,7 @@ public class Table {
 		// 类型
 		private String columnType;
 		// 长度
-		private Integer columnSize;
+		private String columnSize;
 		// 是否可为空
 		private Integer columnNullable;
 		// 默认值
@@ -73,11 +73,11 @@ public class Table {
 			this.columnType = columnType;
 		}
 
-		public Integer getColumnSize() {
+		public String getColumnSize() {
 			return columnSize;
 		}
 
-		public void setColumnSize(Integer columnSize) {
+		public void setColumnSize(String columnSize) {
 			this.columnSize = columnSize;
 		}
 
